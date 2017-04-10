@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Correlação e Regressão</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Steven Dutt Ross" />
+    <link href="libs/remark-css-0.0.1/example.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Correlação e Regressão
+### Steven Dutt Ross
+
+---
+
+
+
+
+## O Diagrama de dispersão
+
+O Diagrama de Dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.
+
+---
+
+
+```r
+x &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
+y &lt;- c(100, 200,300,400,500,600, 700, 800, 900, 1000) #criando outro vetor
+plot(x,y, col = "red", lwd = 10) #desenhando um gráfico de dispersão
+```
+
+![](index_files/figure-html/dispe-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+x &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
+y &lt;- c(210, 50,280,400,590,540, 730, 770, 800, 1100) #criando outro vetor
+plot(x,y, col = "blue", lwd = 10) #desenhando um gráfico de dispersão
+```
+
+![](index_files/figure-html/dispe1-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+idade = c(56, 30, 40, 32, 39, 23, 17, 20, 28, 16)
+qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
+datacor = data.frame(qtdmiojo,idade)
+datacor
+```
+
+---
+
+
+```
+##    qtdmiojo idade
+## 1        17    56
+## 2        29    30
+## 3        27    40
+## 4        35    32
+## 5        27    39
+## 6        56    23
+## 7        58    17
+## 8        54    20
+## 9        50    28
+## 10       38    16
+```
+
+---
+
+Este diagrama de dispersão tem um padrão linear geral (reta), mas a relação é negativa.
+
+![](index_files/figure-html/idade3-1.png)&lt;!-- --&gt;
+
+---
+
+Essa padrão linear é facil de ver.
+![](index_files/figure-html/idade4-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+penademorte &lt;- c(7,7,3,0,0,10,5,7,0,10,1,8,1,9,8,8,4,10,10,9)
+aborto      &lt;- c(1,2,7,7,9, 3,9,5,8,4,10,3,9,2,2,6,8,6,6,8)
+plot(penademorte,aborto)
+abline(lsfit(penademorte,aborto),col="darkred")
+```
+
+![](index_files/figure-html/aborto-1.png)&lt;!-- --&gt;
+
+---
+
+Quais variáveis têm padrão linear positivo? quais têm padrão linear negativo? Quais não tem um padrão (padrão nulo)? 
+![](index_files/figure-html/tipo-1.png)&lt;!-- --&gt;
+
+---
+
+background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
+background-position: 50% 50%
+class: center, bottom, inverse
+
+## Correlação
+
+---
+
+## O que é correlação?
+
+A Correlação mede a **direção** (positivas ou negativas) e a **intensidade** (força) da relação linear entre duas variáveis quantitativas (relacionamento entre duas variáveis). Costuma-se representar a correlação pela letra *r*.
+
+
+---
+
+## Fatos sobre a correlação 
+
+&lt;p&gt; **A correlação não faz distinção entre variável explicativa e variável resposta** Não faz diferença alguma qual variável você chama de *x* e qual você chama de *y*, ao calcular a correlação.
+&lt;p&gt; 
+&lt;p&gt; **r positivo indica uma associação positiva entre as variáveis**, e r negativo indica uma associação negativa.
+&lt;p&gt; 
+&lt;p&gt; **A correlação *r* é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
+
+---
+
+## Tipos de correlações
+
+&lt;p&gt; **Correlação de Pearson** para variáveis continuas
+&lt;p&gt; **Correlação de Spearman** para variáveis ordinais
+
+[Para saber mais clique aqui](http://rstudio-pubs-static.s3.amazonaws.com/10539_9a0d69971efd414d96bfb4b8cc20e76f.html#/6)
+&lt;p&gt;
+[Fonte: COEFICIENTES DE CORRELAÇÃO PARA VARIÁVEIS ORDINAIS E DICOTÔMICAS DERIVADOS DO COEFICIENTE LINEAR DE PEARSON](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
+
+---
+
+## Correlação de Pearson
+### Coeficiente de correlação produto-momento de Pearson (r)
+&lt;p&gt; Mede a intensidade e a direção da relação entre duas variáveis contínuas
+## Interpretação do r
+### Valores de referência	Interpretação
+&lt;p&gt;  0 &lt; r &lt; 0,25	baixa ou nenhuma associação
+&lt;p&gt;  0,25 &lt; r &lt; 0,5	grau fraco de associação
+&lt;p&gt;  0,5 &lt; r &lt; 0,75	grau moderado ou bom de associação
+&lt;p&gt;  r &gt; 0,75	grau bom ou excelente
+
+---
+
+## Correlação de Pearson
+### Fórmula
+
+```
+
+```
+$$\[r =\frac{COV(x,y)}{S_xS_y} \] $$
+  
+Onde:
+* COV = covariância
+* S = Desvio-padrão
+* Covariância é o número que reflete o grau em que duas variáveis variam juntas.
+
+```
+
+```
+  `$$\[COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}\]$$`
+
+---
+##Correlação entre idade e miojo
+
+```r
+cor(datacor$idade, datacor$qtdmiojo)
+```
+
+```
+## [1] -0.8262782
+```
+
+```r
+plot(datacor$idade, datacor$qtdmiojo)
+abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
+```
+
+![](index_files/figure-html/Coeficientes2-1.png)&lt;!-- --&gt;
+
+---
+
+# Correlação de Pearson
+Correlação entre as variáveis MPG e HP e as variáveis MPG e WT
+
+```r
+data("mtcars")
+cor(mtcars$mpg,mtcars$hp)
+```
+
+```
+## [1] -0.7761684
+```
+
+```r
+cor(mtcars$mpg,mtcars$wt)
+```
+
+```
+## [1] -0.8676594
+```
+
+---
+
+##  Correlação de Spearman
+
+```r
+var1 = c(10, 9, 5, 6, 7)
+var2 = c(3, 6, 10, 5, 4)
+cor(var1,  var2, method="spearman")
+```
+
+```
+## [1] -0.7
+```
+
+---
+
+### Na prática, fazemos uma matriz com todas as correlações.
+
+```r
+animais = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
+frutas = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
+fas = c(3, 20, 27, 26, 16, 41, 34, 13, 31, 38)
+dados.fv = data.frame(animais, frutas, fas)
+cor(dados.fv)  
+```
+
+```
+##           animais    frutas       fas
+## animais 1.0000000 0.8723616 0.6592267
+## frutas  0.8723616 1.0000000 0.5185627
+## fas     0.6592267 0.5185627 1.0000000
+```
+
+```r
+pairs(dados.fv)
+```
+
+![](index_files/figure-html/Coeficientes4-1.png)&lt;!-- --&gt;
+
+---
+
+## Na prática, fazemos uma matriz com todas as correlações.
+
+```r
+cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+```
+
+```
+##            disp        drat         hp        mpg        qsec         wt
+## disp  1.0000000 -0.71021393  0.7909486 -0.8475514 -0.43369788  0.8879799
+## drat -0.7102139  1.00000000 -0.4487591  0.6811719  0.09120476 -0.7124406
+## hp    0.7909486 -0.44875912  1.0000000 -0.7761684 -0.70822339  0.6587479
+## mpg  -0.8475514  0.68117191 -0.7761684  1.0000000  0.41868403 -0.8676594
+## qsec -0.4336979  0.09120476 -0.7082234  0.4186840  1.00000000 -0.1747159
+## wt    0.8879799 -0.71244065  0.6587479 -0.8676594 -0.17471588  1.0000000
+```
+
+---
+
+# No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.
+
+---
+
+## Visualização da Matriz de Correlação
+![](index_files/figure-html/Coeficientes7-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação
+
+```r
+library(corrplot)
+M &lt;- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+corrplot(M, method="circle")
+```
+
+![](index_files/figure-html/Coeficientes71-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação
+
+```r
+corrplot(M, method="square")
+```
+
+![](index_files/figure-html/MC-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação
+
+```r
+corrplot(M, method="number")
+```
+
+![](index_files/figure-html/MC2-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação
+
+```r
+corrplot(M, method="color")
+```
+
+![](index_files/figure-html/MC3-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação
+
+```r
+corrplot(M, method="pie")
+```
+
+![](index_files/figure-html/MC4-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação:Criação de Grupos 
+
+```r
+corrplot(M, order="hclust", addrect=2)
+```
+
+![](index_files/figure-html/MC5-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualização da Matriz de Correlação: Democratas e Republicanos
+
+```r
+col3 &lt;- colorRampPalette(c("red", "white", "blue")) 
+corrplot(M, order="hclust", addrect=2, col=col3(20))
+```
+
+![](index_files/figure-html/MC6-1.png)&lt;!-- --&gt;
+
+---
+
+## Matriz de correlação Pós-Moderna
+
+```r
+wb &lt;- c("white","black")
+corrplot(M, order="hclust", addrect=2, col=wb, bg="gold2")
+```
+
+![](index_files/figure-html/MC7-1.png)&lt;!-- --&gt;
+
+---
+
+## Matriz de correlação Analítica (Versão 1)
+
+```r
+corrplot.mixed(M)
+```
+
+![](index_files/figure-html/MC8-1.png)&lt;!-- --&gt;
+
+---
+
+## Matriz de correlação Analítica  (Versão 2)
+
+```r
+corrplot(M,addCoef.col=TRUE,number.cex=0.7)
+```
+
+![](index_files/figure-html/MC9-1.png)&lt;!-- --&gt;
+
+
+---
+
+background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
+background-position: 50% 50%
+class: center, bottom, inverse
+
+## Regressão linear
+
+---
+
+##  Regressão linear: objetivos
+* Predizer observações futuras
+* Avaliar o efeito as relações da variável independente (x) sobre uma variável dependente (y)
+* Descrever a estrutura dos dados
+
+## Modelo de Regressão Linear
+&lt;p&gt;Modelo: y = a + bx + Erro
+&lt;p&gt;Onde:
+&lt;p&gt;y = é o valor a ser predito
+&lt;p&gt;a = é o intercepto (valor quando x = 0)
+&lt;p&gt;b = é a inclinação da reta de regressão
+&lt;p&gt;x = é o valor da variável preditora
+
+---
+
+## Modelo de regressão: exemplo 1
+
+```r
+y = c(110, 120, 90, 70, 50, 80, 40, 40, 50, 30)
+xx = 1:10
+modelo = lm(y ~ xx)
+modelo
+```
+
+```
+## 
+## Call:
+## lm(formula = y ~ xx)
+## 
+## Coefficients:
+## (Intercept)           xx  
+##     118.667       -9.212
+```
+
+---
+
+## Modelo de regressão: exemplo 1
+
+```r
+plot(y ~ xx)
+abline(modelo, col=2, lty=2, lwd=2)
+legend("top", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
+```
+
+![](index_files/figure-html/Reg0-1.png)&lt;!-- --&gt;
+
+---
+
+## Modelo de regressão: exemplo 2
+
+```r
+renda = c(1750, 1680, 1700, 1710, 1690, 1650, 1650, 1600, 1800, 1860)
+anosdeestudo = c(8, 7, 6, 6, 6, 5, 5, 5, 8, 9)
+modelo2 = lm(renda ~ anosdeestudo)
+```
+
+---
+
+
+```r
+plot(renda ~ anosdeestudo)
+abline(modelo2, col=2, lty=2, lwd=2)
+```
+
+![](index_files/figure-html/Reg21-1.png)&lt;!-- --&gt;
+
+```r
+modelo2
+```
+
+```
+## 
+## Call:
+## lm(formula = renda ~ anosdeestudo)
+## 
+## Coefficients:
+##  (Intercept)  anosdeestudo  
+##      1387.51         49.46
+```
+
+---
+
+## Modelo de regressão: exemplo 3
+
+```r
+data("mtcars")
+modelo3 = lm(mpg ~ wt, data=mtcars)
+modelo3
+```
+
+```
+## 
+## Call:
+## lm(formula = mpg ~ wt, data = mtcars)
+## 
+## Coefficients:
+## (Intercept)           wt  
+##      37.285       -5.344
+```
+
+---
+
+
+```r
+plot(mtcars$mpg ~ mtcars$wt)
+abline(modelo3, col=2, lty=2, lwd=2)
+legend("topright", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
+```
+
+![](index_files/figure-html/Reg31-1.png)&lt;!-- --&gt;
+
+---
+
+## Modelo de regressão: exemplo 4
+
+```r
+modelo4 = lm(mpg ~ wt+cyl+disp+hp, data=mtcars)
+modelo4
+```
+
+```
+## 
+## Call:
+## lm(formula = mpg ~ wt + cyl + disp + hp, data = mtcars)
+## 
+## Coefficients:
+## (Intercept)           wt          cyl         disp           hp  
+##    40.82854     -3.85390     -1.29332      0.01160     -0.02054
+```
+
+---
+
+
+```r
+par(mfrow = c(2, 2))
+plot(mtcars$mpg ~ mtcars$wt)
+plot(mtcars$mpg ~ mtcars$cyl)
+plot(mtcars$mpg ~ mtcars$disp)
+plot(mtcars$mpg ~ mtcars$hp)
+```
+
+![](index_files/figure-html/Reg5-1.png)&lt;!-- --&gt;
+
+---
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('showSlide', function (slide) {setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 100)});</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
