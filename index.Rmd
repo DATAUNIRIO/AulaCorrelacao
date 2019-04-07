@@ -1,0 +1,393 @@
+---
+title: "Correlação e Regressão"
+author: "Steven Dutt Ross"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(reshape2)
+```
+
+## O Diagrama de dispersão
+
+O Diagrama de Dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.
+
+---
+
+```{r dispe, echo=TRUE}
+x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
+y <- c(100, 200,300,400,500,600, 700, 800, 900, 1000) #criando outro vetor
+plot(x,y, col = "red", lwd = 10) #desenhando um gráfico de dispersão
+```
+
+---
+
+```{r dispe1, echo=TRUE}
+x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
+y <- c(210, 50,280,400,590,540, 730, 770, 800, 1100) #criando outro vetor
+plot(x,y, col = "blue", lwd = 10) #desenhando um gráfico de dispersão
+```
+
+---
+
+```{r idade, echo=TRUE, results="hide"}
+idade = c(56, 30, 40, 32, 39, 23, 17, 20, 28, 16)
+qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
+datacor = data.frame(qtdmiojo,idade)
+datacor
+```
+
+---
+
+```{r idade2, echo=FALSE}
+idade = c(56, 30, 40, 32, 39, 23, 17, 20, 28, 16)
+qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
+datacor = data.frame(qtdmiojo,idade)
+datacor
+```
+
+---
+
+Este diagrama de dispersão tem um padrão linear geral (reta), mas a relação é negativa.
+
+```{r idade3, echo=FALSE}
+plot(datacor$idade, datacor$qtdmiojo)
+```
+
+---
+
+Essa padrão linear é facil de ver.
+```{r idade4, echo=FALSE}
+plot(datacor$idade, datacor$qtdmiojo)
+abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
+```
+
+---
+
+```{r aborto, echo=TRUE}
+penademorte <- c(7,7,3,0,0,10,5,7,0,10,1,8,1,9,8,8,4,10,10,9)
+aborto      <- c(1,2,7,7,9, 3,9,5,8,4,10,3,9,2,2,6,8,6,6,8)
+plot(penademorte,aborto)
+abline(lsfit(penademorte,aborto),col="darkred")
+```
+
+---
+
+Quais variáveis têm padrão linear positivo? quais têm padrão linear negativo? Quais não tem um padrão (padrão nulo)? 
+```{r tipo, echo=FALSE}
+V1 = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
+V2 = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
+V3 = c(3, 20, 27, 26, 16, 11, 34, 13, 31, 18)
+V4 = c(10,2,  1, 2, 5, 6, 0, 4, 1, 8)
+dados.v = data.frame(V1,V2,V3,V4)
+pairs(dados.v)
+```
+
+---
+
+background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
+background-position: 50% 50%
+class: center, bottom, inverse
+
+## Correlação
+
+---
+
+## O que é correlação?
+
+A Correlação mede a **direção** (positivas ou negativas) e a **intensidade** (força) da relação linear entre duas variáveis quantitativas (relacionamento entre duas variáveis). Costuma-se representar a correlação pela letra *r*.
+
+
+---
+
+## Fatos sobre a correlação 
+
+<p> **A correlação não faz distinção entre variável explicativa e variável resposta** Não faz diferença alguma qual variável você chama de *x* e qual você chama de *y*, ao calcular a correlação.
+<p> 
+<p> **r positivo indica uma associação positiva entre as variáveis**, e r negativo indica uma associação negativa.
+<p> 
+<p> **A correlação *r* é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
+
+---
+
+## Tipos de correlações
+
+<p> **Correlação de Pearson** para variáveis continuas
+<p> **Correlação de Spearman** para variáveis ordinais
+
+[Para saber mais clique aqui](http://rstudio-pubs-static.s3.amazonaws.com/10539_9a0d69971efd414d96bfb4b8cc20e76f.html#/6)
+<p>
+[Fonte: COEFICIENTES DE CORRELAÇÃO PARA VARIÁVEIS ORDINAIS E DICOTÔMICAS DERIVADOS DO COEFICIENTE LINEAR DE PEARSON](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
+
+---
+
+## Correlação de Pearson
+### Coeficiente de correlação produto-momento de Pearson (r)
+<p> Mede a intensidade e a direção da relação entre duas variáveis contínuas
+## Interpretação do r
+### Valores de referência	Interpretação
+<p>  0 < r < 0,25	baixa ou nenhuma associação
+<p>  0,25 < r < 0,5	grau fraco de associação
+<p>  0,5 < r < 0,75	grau moderado ou bom de associação
+<p>  r > 0,75	grau bom ou excelente
+
+---
+
+## Correlação de Pearson
+### Fórmula
+
+```
+
+```
+$$\[r =\frac{COV(x,y)}{S_xS_y} \] $$
+  
+Onde:
+* COV = covariância
+* S = Desvio-padrão
+* Covariância é o número que reflete o grau em que duas variáveis variam juntas.
+
+```
+
+```
+  $$\[COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}\]$$
+
+---
+##Correlação entre idade e miojo
+```{r Coeficientes2, echo=TRUE, fig.width=8, fig.height=5}
+cor(datacor$idade, datacor$qtdmiojo)
+plot(datacor$idade, datacor$qtdmiojo)
+abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
+```
+
+---
+
+# Correlação de Pearson
+Correlação entre as variáveis MPG e HP e as variáveis MPG e WT
+```{r Coeficientes3, echo=TRUE}
+data("mtcars")
+cor(mtcars$mpg,mtcars$hp)
+cor(mtcars$mpg,mtcars$wt)
+```
+
+---
+
+##  Correlação de Spearman
+```{r Coeficientes5, echo=TRUE}
+var1 = c(10, 9, 5, 6, 7)
+var2 = c(3, 6, 10, 5, 4)
+cor(var1,  var2, method="spearman")
+```
+
+---
+
+### Na prática, fazemos uma matriz com todas as correlações.
+```{r Coeficientes4, echo=TRUE, fig.width=7, fig.height=3}
+animais = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
+frutas = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
+fas = c(3, 20, 27, 26, 16, 41, 34, 13, 31, 38)
+dados.fv = data.frame(animais, frutas, fas)
+cor(dados.fv)  
+pairs(dados.fv)
+```
+
+---
+
+## Na prática, fazemos uma matriz com todas as correlações.
+```{r Coeficientes6, echo=TRUE}
+cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+```  
+
+---
+
+# No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.
+
+---
+
+## Visualização da Matriz de Correlação
+```{r Coeficientes7, echo=FALSE}
+library(corrplot)
+M <- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+corrplot(M, method="circle")
+```
+
+---
+
+## Visualização da Matriz de Correlação
+```{r Coeficientes71, echo=TRUE}
+library(corrplot)
+M <- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+corrplot(M, method="circle")
+```
+
+---
+
+## Visualização da Matriz de Correlação
+```{r MC, echo=TRUE}
+corrplot(M, method="square")
+```
+
+---
+
+## Visualização da Matriz de Correlação
+```{r MC2, echo=TRUE}
+corrplot(M, method="number")
+```
+
+---
+
+## Visualização da Matriz de Correlação
+```{r MC3, echo=TRUE}
+corrplot(M, method="color")
+```
+
+---
+
+## Visualização da Matriz de Correlação
+```{r MC4, echo=TRUE}
+corrplot(M, method="pie")
+```
+
+---
+
+## Visualização da Matriz de Correlação:Criação de Grupos 
+```{r MC5, echo=TRUE}
+
+corrplot(M, order="hclust", addrect=2)
+```
+
+---
+
+## Visualização da Matriz de Correlação: Democratas e Republicanos
+```{r MC6, echo=TRUE}
+col3 <- colorRampPalette(c("red", "white", "blue")) 
+corrplot(M, order="hclust", addrect=2, col=col3(20))
+```
+
+---
+
+## Matriz de correlação Pós-Moderna
+```{r MC7, echo=TRUE}
+wb <- c("white","black")
+corrplot(M, order="hclust", addrect=2, col=wb, bg="gold2")
+```
+
+---
+
+## Matriz de correlação Analítica (Versão 1)
+```{r MC8, echo=TRUE}  
+corrplot.mixed(M)
+```
+
+---
+
+## Matriz de correlação Analítica  (Versão 2)
+```{r MC9, echo=TRUE}
+corrplot(M,addCoef.col=TRUE,number.cex=0.7)
+```
+
+
+---
+
+background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
+background-position: 50% 50%
+class: center, bottom, inverse
+
+## Regressão linear
+
+---
+
+##  Regressão linear: objetivos
+* Predizer observações futuras
+* Avaliar o efeito as relações da variável independente (x) sobre uma variável dependente (y)
+* Descrever a estrutura dos dados
+
+## Modelo de Regressão Linear
+$Y = \beta_0 + \beta_1 x + \epsilon$
+
+<p>Onde:
+<p>Y = é o valor a ser predito
+<p>$\beta_0$ = é o intercepto (valor quando x = 0)
+<p>$\beta_0$ = é a inclinação da reta de regressão
+<p>x = é o valor da variável preditora
+<p>$\epsilon$
+
+---
+
+## Modelo de regressão: exemplo 1
+```{r Reg, echo=TRUE}
+y = c(110, 120, 90, 70, 50, 80, 40, 40, 50, 30)
+xx = 1:10
+modelo = lm(y ~ xx)
+modelo
+```
+
+---
+
+## Modelo de regressão: exemplo 1
+```{r Reg0, echo=TRUE, fig.width=7, fig.height=5}
+plot(y ~ xx)
+abline(modelo, col=2, lty=2, lwd=2)
+legend("top", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
+```
+
+---
+
+## Modelo de regressão: exemplo 2
+```{r Reg2, echo=TRUE}
+renda = c(1750, 1680, 1700, 1710, 1690, 1650, 1650, 1600, 1800, 1860)
+anosdeestudo = c(8, 7, 6, 6, 6, 5, 5, 5, 8, 9)
+modelo2 = lm(renda ~ anosdeestudo)
+```
+
+---
+
+```{r Reg21, echo=TRUE}
+plot(renda ~ anosdeestudo)
+abline(modelo2, col=2, lty=2, lwd=2)
+modelo2
+```
+
+---
+
+## Modelo de regressão: exemplo 3
+```{r Reg3, echo=TRUE}
+data("mtcars")
+modelo3 = lm(mpg ~ wt, data=mtcars)
+modelo3
+```
+
+---
+
+```{r Reg31, echo=TRUE}
+plot(mtcars$mpg ~ mtcars$wt)
+abline(modelo3, col=2, lty=2, lwd=2)
+legend("topright", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
+```
+
+---
+
+## Modelo de regressão: exemplo 4
+```{r Reg4, echo=TRUE}
+modelo4 = lm(mpg ~ wt+cyl+disp+hp, data=mtcars)
+modelo4
+```
+
+---
+
+```{r Reg5, echo=TRUE}
+par(mfrow = c(2, 2))
+plot(mtcars$mpg ~ mtcars$wt)
+plot(mtcars$mpg ~ mtcars$cyl)
+plot(mtcars$mpg ~ mtcars$disp)
+plot(mtcars$mpg ~ mtcars$hp)
+```
+
+---
