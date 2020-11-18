@@ -1,53 +1,170 @@
 ---
-title: "Correlação e Regressão"
+title: "`r emo::ji('man_teacher')` Correlação e Regressão"
+subtitle: "<br> `r emo::ji('link')` [Aula Correlação](https://ap.metodosquantitativos.com/)"
 author: "Steven Dutt Ross"
+institute: "UNIRIO"
 output:
   xaringan::moon_reader:
     lib_dir: libs
+    css: ["xaringan-themer.css", "slides-style.css"]
     nature:
-      highlightStyle: github
+      highlightStyle: solarized-light
       highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
 ---
 
+```{css, echo=FALSE}
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Gochi+Hand|Handlee&display=swap');
+  body {
+    background-color: #f7f68f;
+    color: #1a5b78;
+    font-family: 'Acme', sans-serif;
+    font-size: 26px;
+  }
+
+a:link {
+  color: #ffffff;
+}
+
+.MathJax { font-size: 1.3em !important; }
+
+.huge-text {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 600%;
+ font-weight: bold;
+ color: var(--monument);
+}
+.huge-number {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 1700%;
+ font-weight: bold;
+ color: var(--baby-blue);
+}
+
+/* Font sizes */
+.larger { font-size: 400% }
+.bitlarger { font-size: 200% }
+.large { font-size: 130% }
+.midi { font-size: 85% }
+.small { font-size: 70% }
+.xsmall { font-size: 60% }
+.tiny { font-size: 50% }
+
+
+/* Handwriting */
+.hand{
+  font-family: 'Gochi Hand', cursive;
+  color: var(--monument);
+  font-size: 125%;
+}
+.hand-large{
+  font-family: 'Gochi Hand', cursive;
+  color: var(--monument);
+  font-size: 500%;
+}
+/* Footer */
+div.my-footer {
+    border-top: 1px solid var(--opal-gray);
+    position: absolute;
+    bottom: 0px;
+    height: 35px;
+    width: 90%;
+}
+div.my-footer span {
+    font-size: 12pt;
+    position: absolute;
+    color: #333333;
+    bottom: 10px;
+}
+div.my-footer a {
+    font-size: 12pt;
+    color: #333333;
+}
+
+
+/* Footnote */
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  padding-right: 4em;
+  font-size: 70%;
+}
+
+/*Left 70% - Right 30% */
+.pull-left-wide {
+  width: 70%;
+  float: left;
+}
+.pull-right-narrow {
+  width: 27%;
+  float: right;
+}
+.pull-right-narrow ~ * {
+  clear: both;
+}
+
+  /*Left 30% - Right 70% */
+.pull-left-narrow {
+  width: 30%;
+  float: left;
+}
+.pull-right-wide {
+  width: 67%;
+  float: right;
+}
+.pull-right-wide ~ * {
+  clear: both;
+}
+
+```
+
+```{r set-theme, include=FALSE}
+library(xaringanthemer)
+style_duo_accent(
+  primary_color      = "#1a5b78", # pantone monument
+  secondary_color    = "#fff8c4", 
+  header_font_google = google_font("Raleway"),
+  text_font_google   = google_font("Raleway", "300", "300i"),
+  code_font_google   = google_font("Source Code Pro"),
+  text_font_size     = "30px"
+)
+```
+
 ```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(cache=TRUE)
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(reshape2)
 ```
 
-## O Diagrama de dispersão
+## .hand[O Diagrama de dispersão]
 
-O Diagrama de Dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.
+.hand[O Diagrama de dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.]
 
 ---
 
-```{r dispe, echo=TRUE}
-x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
-y <- c(100, 200,300,400,500,600, 700, 800, 900, 1000) #criando outro vetor
-plot(x,y, col = "red", lwd = 10) #desenhando um gráfico de dispersão
+```{r dispe, echo=TRUE,fig.align='center',fig.width=12}
+x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) 
+y <- c(100, 200,300,400,500,600, 700, 800, 900, 1000) 
+par(mfrow=c(1,2))
+plot(x,y, col = "red", pch=21,lwd = 10) 
+y <- c(210, 50,280,400,590,540, 730, 770, 800, 1100)
+plot(x,y, col = "blue",pch=21, lwd = 10) 
+par(mfrow=c(1,1))
 ```
 
 ---
 
-```{r dispe1, echo=TRUE}
-x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
-y <- c(210, 50,280,400,590,540, 730, 770, 800, 1100) #criando outro vetor
-plot(x,y, col = "blue", lwd = 10) #desenhando um gráfico de dispersão
-```
-
----
-
-```{r idade, echo=TRUE, results="hide"}
-idade = c(56, 30, 40, 32, 39, 23, 17, 20, 28, 16)
-qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
-datacor = data.frame(qtdmiojo,idade)
-datacor
-```
-
----
-
-```{r idade2, echo=FALSE}
+```{r idade}
 idade = c(56, 30, 40, 32, 39, 23, 17, 20, 28, 16)
 qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
 datacor = data.frame(qtdmiojo,idade)
@@ -59,29 +176,33 @@ datacor
 Este diagrama de dispersão tem um padrão linear geral (reta), mas a relação é negativa.
 
 ```{r idade3, echo=FALSE}
-plot(datacor$idade, datacor$qtdmiojo)
+plot(datacor$idade, datacor$qtdmiojo, col = "darkblue",pch=21)
 ```
 
 ---
 
 Essa padrão linear é facil de ver.
+
 ```{r idade4, echo=FALSE}
-plot(datacor$idade, datacor$qtdmiojo)
+plot(datacor$idade, datacor$qtdmiojo,col = "darkblue",pch=21)
 abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
 ```
 
 ---
 
+
 ```{r aborto, echo=TRUE}
+#Outro exemplo: pena de morte e aborto
 penademorte <- c(7,7,3,0,0,10,5,7,0,10,1,8,1,9,8,8,4,10,10,9)
 aborto      <- c(1,2,7,7,9, 3,9,5,8,4,10,3,9,2,2,6,8,6,6,8)
-plot(penademorte,aborto)
+plot(penademorte,aborto,col = "darkblue",pch=21)
 abline(lsfit(penademorte,aborto),col="darkred")
 ```
 
 ---
 
 Quais variáveis têm padrão linear positivo? quais têm padrão linear negativo? Quais não tem um padrão (padrão nulo)? 
+
 ```{r tipo, echo=FALSE}
 V1 = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
 V2 = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
@@ -92,12 +213,10 @@ pairs(dados.v)
 ```
 
 ---
+class: center, middle
 
-background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
+.huge-text[Correlação...]
 
-## Correlação
 
 ---
 
@@ -114,7 +233,7 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 <p> 
 <p> **r positivo indica uma associação positiva entre as variáveis**, e r negativo indica uma associação negativa.
 <p> 
-<p> **A correlação *r* é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
+<p> **A correlação é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
 
 ---
 
@@ -125,11 +244,10 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 [Para saber mais clique aqui](http://rstudio-pubs-static.s3.amazonaws.com/10539_9a0d69971efd414d96bfb4b8cc20e76f.html#/6)
 <p>
-[Fonte: COEFICIENTES DE CORRELAÇÃO PARA VARIÁVEIS ORDINAIS E DICOTÔMICAS DERIVADOS DO COEFICIENTE LINEAR DE PEARSON](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
+[Fonte](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
 
 ---
 
-## Correlação de Pearson
 ### Coeficiente de correlação produto-momento de Pearson (r)
 <p> Mede a intensidade e a direção da relação entre duas variáveis contínuas
 ## Interpretação do r
@@ -141,26 +259,157 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 ---
 
-## Correlação de Pearson
-### Fórmula
+## Fórmula da correlação de Pearson
 
-```
-
-```
-$$\[r =\frac{COV(x,y)}{S_xS_y} \] $$
-  
+$$ \Huge{ r =\frac{COV(x,y)}{S_xS_y}  }$$
 Onde:
 * COV = covariância
 * S = Desvio-padrão
 * Covariância é o número que reflete o grau em que duas variáveis variam juntas.
 
-```
-
-```
-  $$\[COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}\]$$
+  $$\Huge{COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}}$$
 
 ---
-##Correlação entre idade e miojo
+## Fórmula alternativa
+
+  $$\Huge{r = \frac{n*\Sigma(X*Y) - \Sigma(X)*\Sigma(Y)}{\sqrt{n*\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n*\Sigma(Y)^2-(\Sigma(Y))^2}}}$$
+## Como aplicar a Fórmula em um conjunto de dados?
+
+
+---
+
+
+```{r, echo=FALSE}
+dados <-data.frame(x=c(2,3,4,5,5,6,7,8),
+                   y=c(4,7,9,10,11,11,13,15))
+library(gt)
+# Create a gt table based on a preprocessed `sp500`
+dados %>%
+  gt() %>%
+  tab_header(
+    title = "Banco de dados",
+    subtitle = "para o cálculo da correlação"
+  ) %>%
+  cols_label(
+    x = "X", y = "Y") %>%
+  cols_align(
+    align = "center",
+    columns = vars( x , y)
+  )
+```
+
+---
+class: center, middle
+
+.huge-text[Passo 1]
+
+.large[Fazer cálculos intermediários]
+
+---
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE,comment=NA}
+library(dplyr)
+# Create a gt table based on a preprocessed `sp500`
+dados %>%
+  select(x,y) %>%
+  mutate(x_quad = x*x,
+         y_quad = y*y,
+         xy = x*y) %>%
+  gt() %>%
+  tab_header(
+    title = "Variáveis originais",
+    subtitle = "e cálculos intermediários"
+  ) %>%
+  cols_label(
+    x = "X", y = "Y",x_quad=" X ao Quadrado",
+    y_quad=" Y ao Quadrado",xy="X*Y")%>%
+  tab_spanner(
+    label = "cálculos intermediários",
+    columns = vars(x_quad, y_quad, xy)
+  ) %>%
+  tab_spanner(
+    label = " variáveis originais",
+    columns = vars(x, y)
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = vars( x , y,x_quad, y_quad, xy)
+  )
+```
+
+
+---
+class: center, middle
+
+.huge-text[Passo 2]
+
+.large[Encontrar o somatório]
+
+---
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE,comment=NA}
+dados %>%
+  select(x,y) %>%
+  mutate(x_quad = x*x,
+         y_quad = y*y,
+         xy = x*y) %>%
+  summarise(soma_x= sum(x),soma_y=sum(y),soma_x_quad=sum(x_quad),soma_y_quad=sum(y_quad),soma_xy=sum(xy))%>%
+  gt() %>%
+  tab_header(
+    title = "Soma das variáveis originais",
+    subtitle = " e dos cálculos intermediários"
+  ) %>%
+  cols_label(
+    soma_x = "Soma X", soma_y = "Soma Y",soma_x_quad="Soma X ao Quadrado",
+    soma_y_quad="Soma Y ao Quadrado",soma_xy="Soma X*Y") %>%
+  tab_spanner(
+    label = "cálculos intermediários",
+    columns = vars(soma_x_quad, soma_y_quad, soma_xy)
+  ) %>%
+  tab_spanner(
+    label = " variáveis originais",
+    columns = vars(soma_x, soma_y)
+  ) %>%
+  cols_align(
+    align = "center",
+    columns = vars(soma_x, soma_y,soma_x_quad, soma_y_quad, soma_xy)
+  )
+
+```
+
+---
+class: center, middle
+
+.huge-text[Passo 3]
+
+.large[Aplicar a fórmula]
+
+---
+
+
+$$ \Huge{r = \frac{n\cdot\Sigma(X\cdot Y) -\Sigma(X)*\Sigma(Y)}{\sqrt{n\cdot\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n\cdot\Sigma(Y)^2-(\Sigma(Y))^2}}} $$
+
+
+  
+  $$ \Huge{r = \frac{8(447) -40\cdot80}{\sqrt{8\cdot228-(40)^2}\sqrt{8\cdot(882)^2-((80))^2}}} $$ 
+    
+
+  $$ \Huge{r = \frac{3576-3200}{\sqrt{1824-1600}\sqrt{7056-6400)}}}  $$
+
+  $$ \Huge{r = \frac{376}{83,33}= 0,981 }$$
+
+
+```{r, eval=FALSE}
+dados <-data.frame(x=c(2,3,4,5,5,6,7,8),
+                   y=c(4,7,9,10,11,11,13,15))
+cor(dados$x,dados$y)
+```
+
+
+---
+
+## Correlação entre idade e miojo
+
 ```{r Coeficientes2, echo=TRUE, fig.width=8, fig.height=5}
 cor(datacor$idade, datacor$qtdmiojo)
 plot(datacor$idade, datacor$qtdmiojo)
@@ -170,11 +419,28 @@ abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
 ---
 
 # Correlação de Pearson
-Correlação entre as variáveis MPG e HP e as variáveis MPG e WT
+Correlação entre as variáveis Kmporlitro e HP e as variáveis Kmporlitro e Peso
+
+```{r,echo=FALSE}
+data(mtcars)
+CARROS<-mtcars
+remove(mtcars)
+colnames(CARROS) <- c("Kmporlitro","Cilindros","Preco","HP","Amperagem_circ_eletrico",
+"Peso","RPM","Tipodecombustivel","TipodeMarcha","NumdeMarchas","NumdeValvulas")
+CARROS$TipodeMarcha<-as.factor(CARROS$TipodeMarcha)
+CARROS$Tipodecombustivel<-as.factor(CARROS$Tipodecombustivel)
+levels(CARROS$Tipodecombustivel) <- c('Gasolina','Álcool')
+levels(CARROS$TipodeMarcha) <- c('Automático', 'Manual')
+nomes<-c("Km por litro","Número de Cilindros","Preço",
+"HP = Horse Power (potência do motor)","Amperagem_circ_eletrico = Amperagem média (o principal indicador da bateria)","Peso (em toneladas) do Carro",
+"RPM = Rotações Por Minuto","Tipo de combustível (0 = Gasolina, 1 = Álcool)","Tipo de Câmbio (0 = Automático, 1 = Manual)",
+"Número de Marchas","Número de Válvulas")
+attr(CARROS, "variable.labels") <- nomes
+```
+
 ```{r Coeficientes3, echo=TRUE}
-data("mtcars")
-cor(mtcars$mpg,mtcars$hp)
-cor(mtcars$mpg,mtcars$wt)
+cor(CARROS$Kmporlitro,CARROS$HP)
+cor(CARROS$Kmporlitro,CARROS$Peso)
 ```
 
 ---
@@ -189,12 +455,12 @@ cor(var1,  var2, method="spearman")
 ---
 
 ### Na prática, fazemos uma matriz com todas as correlações.
-```{r Coeficientes4, echo=TRUE, fig.width=7, fig.height=3}
+```{r Coeficientes4, echo=TRUE, fig.width=12, fig.height=5}
 animais = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
 frutas = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
 fas = c(3, 20, 27, 26, 16, 41, 34, 13, 31, 38)
 dados.fv = data.frame(animais, frutas, fas)
-cor(dados.fv)  
+#cor(dados.fv)  
 pairs(dados.fv)
 ```
 
@@ -202,19 +468,32 @@ pairs(dados.fv)
 
 ## Na prática, fazemos uma matriz com todas as correlações.
 ```{r Coeficientes6, echo=TRUE}
-cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Amperagem_circ_eletrico","Peso")])
 ```  
 
 ---
 
-# No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.
+
+```{r,echo=FALSE,warning=FALSE,comment=NA,message=FALSE}
+# https://github.com/feddelegrand7/GomoGomonoMi
+library(GomoGomonoMi)
+
+use_gomo()
+
+gomo_gomo_no(text = " \"No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.", 
+             level = "#", 
+             animation = "zoomIn", 
+             duration = "slower", 
+             delay = 2, 
+             color = "darkred")
+```
 
 ---
 
 ## Visualização da Matriz de Correlação
 ```{r Coeficientes7, echo=FALSE}
 library(corrplot)
-M <- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+M <- cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Peso")])
 corrplot(M, method="circle")
 ```
 
@@ -223,7 +502,7 @@ corrplot(M, method="circle")
 ## Visualização da Matriz de Correlação
 ```{r Coeficientes71, echo=TRUE}
 library(corrplot)
-M <- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+M <- cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Peso")])
 corrplot(M, method="circle")
 ```
 
@@ -257,7 +536,7 @@ corrplot(M, method="pie")
 
 ---
 
-## Visualização da Matriz de Correlação:Criação de Grupos 
+### Visualização da Matriz de Correlação:Criação de Grupos 
 ```{r MC5, echo=TRUE}
 
 corrplot(M, order="hclust", addrect=2)
@@ -265,7 +544,7 @@ corrplot(M, order="hclust", addrect=2)
 
 ---
 
-## Visualização da Matriz de Correlação: Democratas e Republicanos
+### Visualização da Matriz de Correlação: Democratas e Republicanos
 ```{r MC6, echo=TRUE}
 col3 <- colorRampPalette(c("red", "white", "blue")) 
 corrplot(M, order="hclust", addrect=2, col=col3(20))
@@ -296,11 +575,33 @@ corrplot(M,addCoef.col=TRUE,number.cex=0.7)
 
 ---
 
-background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
+class: middle, inverse
 
-## Regressão linear
+.pull-left[
+  .huge-text[check point]
+]
+.pull-right[
+  .larger[
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# https://github.com/feddelegrand7/GomoGomonoMi
+library(GomoGomonoMi)
+use_gomo()
+gomo_gomo_no(text = "até aqui, tudo ok?", 
+             level = "#####", 
+             animation = "zoomIn", 
+             duration = "slower", 
+             delay = 2, 
+             color = "darkred")
+```  
+  
+  ]
+]
+
+
+---
+class: center, bottom
+
+# Regressão linear
 
 ---
 
@@ -309,15 +610,17 @@ class: center, bottom, inverse
 * Avaliar o efeito as relações da variável independente (x) sobre uma variável dependente (y)
 * Descrever a estrutura dos dados
 
-## Modelo de Regressão Linear
-$Y = \beta_0 + \beta_1 x + \epsilon$
+---
 
-<p>Onde:
-<p>Y = é o valor a ser predito
-<p>$\beta_0$ = é o intercepto (valor quando x = 0)
-<p>$\beta_0$ = é a inclinação da reta de regressão
-<p>x = é o valor da variável preditora
-<p>$\epsilon$
+## Modelo de Regressão Linear
+$\Huge{Y = \beta_0 + \beta_1 x + \epsilon}$   
+
+Onde:  
+Y = é o valor a ser predito  
+$\Huge{\beta_0}$ = é o intercepto (valor quando x = 0)  
+$\Huge{\beta_1}$ = é a inclinação da reta de regressão  
+x = é o valor da variável preditora (preditor linear)   
+$\Huge{\epsilon}$ é o erro
 
 ---
 
@@ -352,6 +655,7 @@ modelo2 = lm(renda ~ anosdeestudo)
 ```{r Reg21, echo=TRUE}
 plot(renda ~ anosdeestudo)
 abline(modelo2, col=2, lty=2, lwd=2)
+legend("topleft", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
 modelo2
 ```
 
@@ -390,4 +694,27 @@ plot(mtcars$mpg ~ mtcars$disp)
 plot(mtcars$mpg ~ mtcars$hp)
 ```
 
+
 ---
+
+class: middle, inverse
+
+.pull-left[
+  .huge-text[check point]
+]
+.pull-right[
+  .larger[
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+# https://github.com/feddelegrand7/GomoGomonoMi
+library(GomoGomonoMi)
+use_gomo()
+gomo_gomo_no(text = "até aqui, tudo ok?", 
+             level = "#####", 
+             animation = "zoomIn", 
+             duration = "slower", 
+             delay = 2, 
+             color = "darkred")
+```  
+  
+  ]
+]

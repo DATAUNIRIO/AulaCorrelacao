@@ -1,48 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="" xml:lang="">
   <head>
-    <title>Correlação e Regressão</title>
-    <meta charset="utf-8">
+    <title>👨‍🏫 Correlação e Regressão</title>
+    <meta charset="utf-8" />
     <meta name="author" content="Steven Dutt Ross" />
-    <link href="libs/remark-css-0.0.1/example.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="slides-style.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Correlação e Regressão
+# 👨‍🏫 Correlação e Regressão
+## <br> 🔗 <a href="https://ap.metodosquantitativos.com/">Aula Correlação</a>
 ### Steven Dutt Ross
+### UNIRIO
 
 ---
 
 
+&lt;style type="text/css"&gt;
+@import url('https://fonts.googleapis.com/css2?family=Acme&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&amp;display=swap');
+@import url('https://fonts.googleapis.com/css?family=Gochi+Hand|Handlee&amp;display=swap');
+  body {
+    background-color: #f7f68f;
+    color: #1a5b78;
+    font-family: 'Acme', sans-serif;
+    font-size: 26px;
+  }
+
+a:link {
+  color: #ffffff;
+}
+
+.MathJax { font-size: 1.3em !important; }
+
+.huge-text {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 600%;
+ font-weight: bold;
+ color: var(--monument);
+}
+.huge-number {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 1700%;
+ font-weight: bold;
+ color: var(--baby-blue);
+}
+
+/* Font sizes */
+.larger { font-size: 400% }
+.bitlarger { font-size: 200% }
+.large { font-size: 130% }
+.midi { font-size: 85% }
+.small { font-size: 70% }
+.xsmall { font-size: 60% }
+.tiny { font-size: 50% }
 
 
-## O Diagrama de dispersão
+/* Handwriting */
+.hand{
+  font-family: 'Gochi Hand', cursive;
+  color: var(--monument);
+  font-size: 125%;
+}
+.hand-large{
+  font-family: 'Gochi Hand', cursive;
+  color: var(--monument);
+  font-size: 500%;
+}
+/* Footer */
+div.my-footer {
+    border-top: 1px solid var(--opal-gray);
+    position: absolute;
+    bottom: 0px;
+    height: 35px;
+    width: 90%;
+}
+div.my-footer span {
+    font-size: 12pt;
+    position: absolute;
+    color: #333333;
+    bottom: 10px;
+}
+div.my-footer a {
+    font-size: 12pt;
+    color: #333333;
+}
 
-O Diagrama de Dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.
+
+/* Footnote */
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  padding-right: 4em;
+  font-size: 70%;
+}
+
+/*Left 70% - Right 30% */
+.pull-left-wide {
+  width: 70%;
+  float: left;
+}
+.pull-right-narrow {
+  width: 27%;
+  float: right;
+}
+.pull-right-narrow ~ * {
+  clear: both;
+}
+
+  /*Left 30% - Right 70% */
+.pull-left-narrow {
+  width: 30%;
+  float: left;
+}
+.pull-right-wide {
+  width: 67%;
+  float: right;
+}
+.pull-right-wide ~ * {
+  clear: both;
+}
+
+&lt;/style&gt;
+
+
+
+
+
+## .hand[O Diagrama de dispersão]
+
+.hand[O Diagrama de dispersão é um gráfico onde pontos no espaço cartesiano (X,Y) são usados para representar simultaneamente os valores de duas variáveis quantitativas medidas em cada elemento do conjunto de dados.]
 
 ---
 
 
 ```r
-x &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
-y &lt;- c(100, 200,300,400,500,600, 700, 800, 900, 1000) #criando outro vetor
-plot(x,y, col = "red", lwd = 10) #desenhando um gráfico de dispersão
+x &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) 
+y &lt;- c(100, 200,300,400,500,600, 700, 800, 900, 1000) 
+par(mfrow=c(1,2))
+plot(x,y, col = "red", pch=21,lwd = 10) 
+y &lt;- c(210, 50,280,400,590,540, 730, 770, 800, 1100)
+plot(x,y, col = "blue",pch=21, lwd = 10) 
 ```
 
-![](index_files/figure-html/dispe-1.png)&lt;!-- --&gt;
-
----
-
+&lt;img src="index_files/figure-html/dispe-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
-x &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)  #criando um vetor qualquer 
-y &lt;- c(210, 50,280,400,590,540, 730, 770, 800, 1100) #criando outro vetor
-plot(x,y, col = "blue", lwd = 10) #desenhando um gráfico de dispersão
+par(mfrow=c(1,1))
 ```
-
-![](index_files/figure-html/dispe1-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -53,9 +161,6 @@ qtdmiojo = c(17, 29, 27, 35, 27, 56, 58, 54, 50, 38)
 datacor = data.frame(qtdmiojo,idade)
 datacor
 ```
-
----
-
 
 ```
 ##    qtdmiojo idade
@@ -80,15 +185,18 @@ Este diagrama de dispersão tem um padrão linear geral (reta), mas a relação 
 ---
 
 Essa padrão linear é facil de ver.
+
 ![](index_files/figure-html/idade4-1.png)&lt;!-- --&gt;
 
 ---
 
 
+
 ```r
+#Outro exemplo: pena de morte e aborto
 penademorte &lt;- c(7,7,3,0,0,10,5,7,0,10,1,8,1,9,8,8,4,10,10,9)
 aborto      &lt;- c(1,2,7,7,9, 3,9,5,8,4,10,3,9,2,2,6,8,6,6,8)
-plot(penademorte,aborto)
+plot(penademorte,aborto,col = "darkblue",pch=21)
 abline(lsfit(penademorte,aborto),col="darkred")
 ```
 
@@ -97,15 +205,14 @@ abline(lsfit(penademorte,aborto),col="darkred")
 ---
 
 Quais variáveis têm padrão linear positivo? quais têm padrão linear negativo? Quais não tem um padrão (padrão nulo)? 
+
 ![](index_files/figure-html/tipo-1.png)&lt;!-- --&gt;
 
 ---
+class: center, middle
 
-background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
+.huge-text[Correlação...]
 
-## Correlação
 
 ---
 
@@ -122,7 +229,7 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 &lt;p&gt; 
 &lt;p&gt; **r positivo indica uma associação positiva entre as variáveis**, e r negativo indica uma associação negativa.
 &lt;p&gt; 
-&lt;p&gt; **A correlação *r* é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
+&lt;p&gt; **A correlação é sempre um número entre -1 e 1.** Valores próximos de zero indicam uma relação linear muito fraca. A intensidade da relação linear cresce, à medida que *r* se afasta de zero em direção a -1 ou 1. Os valores de *r* próximos de -1 ou 1 indicam que os pontos num diagrama de dispersão caem próximos de uma reta. Os valores extremos *r= -1* e *r= 1* ocorrem apenas no caso de relação linear perfeita , quando os pontos caem exatamente sobre a reta.
 
 ---
 
@@ -133,11 +240,10 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 [Para saber mais clique aqui](http://rstudio-pubs-static.s3.amazonaws.com/10539_9a0d69971efd414d96bfb4b8cc20e76f.html#/6)
 &lt;p&gt;
-[Fonte: COEFICIENTES DE CORRELAÇÃO PARA VARIÁVEIS ORDINAIS E DICOTÔMICAS DERIVADOS DO COEFICIENTE LINEAR DE PEARSON](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
+[Fonte](http://www.seer.ufu.br/index.php/cieng/issue/view/108)
 
 ---
 
-## Correlação de Pearson
 ### Coeficiente de correlação produto-momento de Pearson (r)
 &lt;p&gt; Mede a intensidade e a direção da relação entre duas variáveis contínuas
 ## Interpretação do r
@@ -149,26 +255,1261 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 ---
 
-## Correlação de Pearson
-### Fórmula
+## Fórmula da correlação de Pearson
 
-```
-
-```
-$$\[r =\frac{COV(x,y)}{S_xS_y} \] $$
-  
+$$ \Huge{ r =\frac{COV(x,y)}{S_xS_y}  }$$
 Onde:
 * COV = covariância
 * S = Desvio-padrão
 * Covariância é o número que reflete o grau em que duas variáveis variam juntas.
 
-```
-
-```
-  `$$\[COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}\]$$`
+  `$$\Huge{COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}}$$`
 
 ---
-##Correlação entre idade e miojo
+## Fórmula alternativa
+
+  `$$\Huge{r = \frac{n*\Sigma(X*Y) - \Sigma(X)*\Sigma(Y)}{\sqrt{n*\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n*\Sigma(Y)^2-(\Sigma(Y))^2}}}$$`
+## Como aplicar a Fórmula em um conjunto de dados?
+
+
+---
+
+
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#zrpxhahxcr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#zrpxhahxcr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#zrpxhahxcr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#zrpxhahxcr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#zrpxhahxcr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#zrpxhahxcr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#zrpxhahxcr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#zrpxhahxcr .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zrpxhahxcr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#zrpxhahxcr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#zrpxhahxcr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#zrpxhahxcr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#zrpxhahxcr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#zrpxhahxcr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zrpxhahxcr .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#zrpxhahxcr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#zrpxhahxcr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zrpxhahxcr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#zrpxhahxcr .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#zrpxhahxcr .gt_left {
+  text-align: left;
+}
+
+#zrpxhahxcr .gt_center {
+  text-align: center;
+}
+
+#zrpxhahxcr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#zrpxhahxcr .gt_font_normal {
+  font-weight: normal;
+}
+
+#zrpxhahxcr .gt_font_bold {
+  font-weight: bold;
+}
+
+#zrpxhahxcr .gt_font_italic {
+  font-style: italic;
+}
+
+#zrpxhahxcr .gt_super {
+  font-size: 65%;
+}
+
+#zrpxhahxcr .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="zrpxhahxcr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal" style>Banco de dados</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>para o cálculo da correlação</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">X</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Y</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_center">2</td>
+      <td class="gt_row gt_center">4</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">9</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">5</td>
+      <td class="gt_row gt_center">10</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">5</td>
+      <td class="gt_row gt_center">11</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">6</td>
+      <td class="gt_row gt_center">11</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">7</td>
+      <td class="gt_row gt_center">13</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">8</td>
+      <td class="gt_row gt_center">15</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+
+---
+class: center, middle
+
+.huge-text[Passo 1]
+
+.large[Fazer cálculos intermediários]
+
+---
+
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#kczowunvay .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kczowunvay .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kczowunvay .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kczowunvay .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kczowunvay .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kczowunvay .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kczowunvay .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kczowunvay .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kczowunvay .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kczowunvay .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kczowunvay .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kczowunvay .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kczowunvay .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kczowunvay .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kczowunvay .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kczowunvay .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kczowunvay .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#kczowunvay .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kczowunvay .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#kczowunvay .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kczowunvay .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kczowunvay .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kczowunvay .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kczowunvay .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kczowunvay .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kczowunvay .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kczowunvay .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kczowunvay .gt_left {
+  text-align: left;
+}
+
+#kczowunvay .gt_center {
+  text-align: center;
+}
+
+#kczowunvay .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kczowunvay .gt_font_normal {
+  font-weight: normal;
+}
+
+#kczowunvay .gt_font_bold {
+  font-weight: bold;
+}
+
+#kczowunvay .gt_font_italic {
+  font-style: italic;
+}
+
+#kczowunvay .gt_super {
+  font-size: 65%;
+}
+
+#kczowunvay .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="kczowunvay" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="5" class="gt_heading gt_title gt_font_normal" style>Variáveis originais</th>
+    </tr>
+    <tr>
+      <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>e cálculos intermediários</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner"> variáveis originais</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">cálculos intermediários</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">X</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Y</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"> X ao Quadrado</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"> Y ao Quadrado</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">X*Y</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_center">2</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">16</td>
+      <td class="gt_row gt_center">8</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">3</td>
+      <td class="gt_row gt_center">7</td>
+      <td class="gt_row gt_center">9</td>
+      <td class="gt_row gt_center">49</td>
+      <td class="gt_row gt_center">21</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">4</td>
+      <td class="gt_row gt_center">9</td>
+      <td class="gt_row gt_center">16</td>
+      <td class="gt_row gt_center">81</td>
+      <td class="gt_row gt_center">36</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">5</td>
+      <td class="gt_row gt_center">10</td>
+      <td class="gt_row gt_center">25</td>
+      <td class="gt_row gt_center">100</td>
+      <td class="gt_row gt_center">50</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">5</td>
+      <td class="gt_row gt_center">11</td>
+      <td class="gt_row gt_center">25</td>
+      <td class="gt_row gt_center">121</td>
+      <td class="gt_row gt_center">55</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">6</td>
+      <td class="gt_row gt_center">11</td>
+      <td class="gt_row gt_center">36</td>
+      <td class="gt_row gt_center">121</td>
+      <td class="gt_row gt_center">66</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">7</td>
+      <td class="gt_row gt_center">13</td>
+      <td class="gt_row gt_center">49</td>
+      <td class="gt_row gt_center">169</td>
+      <td class="gt_row gt_center">91</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">8</td>
+      <td class="gt_row gt_center">15</td>
+      <td class="gt_row gt_center">64</td>
+      <td class="gt_row gt_center">225</td>
+      <td class="gt_row gt_center">120</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+
+
+---
+class: center, middle
+
+.huge-text[Passo 2]
+
+.large[Encontrar o somatório]
+
+---
+
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#nrscakdduk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nrscakdduk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nrscakdduk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nrscakdduk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nrscakdduk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nrscakdduk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nrscakdduk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nrscakdduk .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nrscakdduk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nrscakdduk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nrscakdduk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nrscakdduk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nrscakdduk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#nrscakdduk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrscakdduk .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nrscakdduk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nrscakdduk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#nrscakdduk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nrscakdduk .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#nrscakdduk .gt_left {
+  text-align: left;
+}
+
+#nrscakdduk .gt_center {
+  text-align: center;
+}
+
+#nrscakdduk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nrscakdduk .gt_font_normal {
+  font-weight: normal;
+}
+
+#nrscakdduk .gt_font_bold {
+  font-weight: bold;
+}
+
+#nrscakdduk .gt_font_italic {
+  font-style: italic;
+}
+
+#nrscakdduk .gt_super {
+  font-size: 65%;
+}
+
+#nrscakdduk .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="nrscakdduk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="5" class="gt_heading gt_title gt_font_normal" style>Soma das variáveis originais</th>
+    </tr>
+    <tr>
+      <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style> e dos cálculos intermediários</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner"> variáveis originais</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner">cálculos intermediários</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Soma X</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Soma Y</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Soma X ao Quadrado</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Soma Y ao Quadrado</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Soma X*Y</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_center">40</td>
+      <td class="gt_row gt_center">80</td>
+      <td class="gt_row gt_center">228</td>
+      <td class="gt_row gt_center">882</td>
+      <td class="gt_row gt_center">447</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+
+---
+class: center, middle
+
+.huge-text[Passo 3]
+
+.large[Aplicar a fórmula]
+
+---
+
+
+$$ \Huge{r = \frac{n\cdot\Sigma(X\cdot Y) -\Sigma(X)*\Sigma(Y)}{\sqrt{n\cdot\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n\cdot\Sigma(Y)^2-(\Sigma(Y))^2}}} $$
+
+
+  
+  $$ \Huge{r = \frac{8(447) -40\cdot80}{\sqrt{8\cdot228-(40)^2}\sqrt{8\cdot(882)^2-((80))^2}}} $$ 
+    
+
+  $$ \Huge{r = \frac{3576-3200}{\sqrt{1824-1600}\sqrt{7056-6400)}}}  $$
+
+  $$ \Huge{r = \frac{376}{83,33}= 0,981 }$$
+
+
+
+```r
+dados &lt;-data.frame(x=c(2,3,4,5,5,6,7,8),
+                   y=c(4,7,9,10,11,11,13,15))
+cor(dados$x,dados$y)
+```
+
+
+---
+
+## Correlação entre idade e miojo
+
 
 ```r
 cor(datacor$idade, datacor$qtdmiojo)
@@ -188,11 +1529,13 @@ abline(lsfit(datacor$idade, datacor$qtdmiojo),col="darkred")
 ---
 
 # Correlação de Pearson
-Correlação entre as variáveis MPG e HP e as variáveis MPG e WT
+Correlação entre as variáveis Kmporlitro e HP e as variáveis Kmporlitro e Peso
+
+
+
 
 ```r
-data("mtcars")
-cor(mtcars$mpg,mtcars$hp)
+cor(CARROS$Kmporlitro,CARROS$HP)
 ```
 
 ```
@@ -200,7 +1543,7 @@ cor(mtcars$mpg,mtcars$hp)
 ```
 
 ```r
-cor(mtcars$mpg,mtcars$wt)
+cor(CARROS$Kmporlitro,CARROS$Peso)
 ```
 
 ```
@@ -230,17 +1573,7 @@ animais = c(10, 13, 14, 11, 10, 17, 10, 7, 12, 13)
 frutas = c(11, 11, 14, 9, 7, 14, 9, 4, 13, 12)
 fas = c(3, 20, 27, 26, 16, 41, 34, 13, 31, 38)
 dados.fv = data.frame(animais, frutas, fas)
-cor(dados.fv)  
-```
-
-```
-##           animais    frutas       fas
-## animais 1.0000000 0.8723616 0.6592267
-## frutas  0.8723616 1.0000000 0.5185627
-## fas     0.6592267 0.5185627 1.0000000
-```
-
-```r
+#cor(dados.fv)  
 pairs(dados.fv)
 ```
 
@@ -251,22 +1584,40 @@ pairs(dados.fv)
 ## Na prática, fazemos uma matriz com todas as correlações.
 
 ```r
-cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Amperagem_circ_eletrico","Peso")])
 ```
 
 ```
-##            disp        drat         hp        mpg        qsec         wt
-## disp  1.0000000 -0.71021393  0.7909486 -0.8475514 -0.43369788  0.8879799
-## drat -0.7102139  1.00000000 -0.4487591  0.6811719  0.09120476 -0.7124406
-## hp    0.7909486 -0.44875912  1.0000000 -0.7761684 -0.70822339  0.6587479
-## mpg  -0.8475514  0.68117191 -0.7761684  1.0000000  0.41868403 -0.8676594
-## qsec -0.4336979  0.09120476 -0.7082234  0.4186840  1.00000000 -0.1747159
-## wt    0.8879799 -0.71244065  0.6587479 -0.8676594 -0.17471588  1.0000000
+##                              Preco         RPM         HP Kmporlitro
+## Preco                    1.0000000 -0.43369788  0.7909486 -0.8475514
+## RPM                     -0.4336979  1.00000000 -0.7082234  0.4186840
+## HP                       0.7909486 -0.70822339  1.0000000 -0.7761684
+## Kmporlitro              -0.8475514  0.41868403 -0.7761684  1.0000000
+## Amperagem_circ_eletrico -0.7102139  0.09120476 -0.4487591  0.6811719
+## Peso                     0.8879799 -0.17471588  0.6587479 -0.8676594
+##                         Amperagem_circ_eletrico       Peso
+## Preco                               -0.71021393  0.8879799
+## RPM                                  0.09120476 -0.1747159
+## HP                                  -0.44875912  0.6587479
+## Kmporlitro                           0.68117191 -0.8676594
+## Amperagem_circ_eletrico              1.00000000 -0.7124406
+## Peso                                -0.71244065  1.0000000
 ```
 
 ---
 
-# No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.
+
+
+  <head>
+
+<link
+  rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css'
+/>
+
+</head>
+
+<h1 style='color:darkred; display:inline-block' class='animate__animated animate__zoomIn animate__repeat-1 animate__delay-2s animate__slower'> "No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.</h1>
 
 ---
 
@@ -279,7 +1630,7 @@ cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
 
 ```r
 library(corrplot)
-M &lt;- cor(mtcars[,c("disp","drat","hp","mpg","qsec","wt")])
+M &lt;- cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Peso")])
 corrplot(M, method="circle")
 ```
 
@@ -327,7 +1678,7 @@ corrplot(M, method="pie")
 
 ---
 
-## Visualização da Matriz de Correlação:Criação de Grupos 
+### Visualização da Matriz de Correlação:Criação de Grupos 
 
 ```r
 corrplot(M, order="hclust", addrect=2)
@@ -337,7 +1688,7 @@ corrplot(M, order="hclust", addrect=2)
 
 ---
 
-## Visualização da Matriz de Correlação: Democratas e Republicanos
+### Visualização da Matriz de Correlação: Democratas e Republicanos
 
 ```r
 col3 &lt;- colorRampPalette(c("red", "white", "blue")) 
@@ -380,11 +1731,33 @@ corrplot(M,addCoef.col=TRUE,number.cex=0.7)
 
 ---
 
-background-image: url(http://www.planwallpaper.com/cool-background#static/images/cool-background.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
+class: middle, inverse
 
-## Regressão linear
+.pull-left[
+  .huge-text[check point]
+]
+.pull-right[
+  .larger[
+
+  <head>
+
+<link
+  rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css'
+/>
+
+</head>
+
+<h5 style='color:darkred; display:inline-block' class='animate__animated animate__zoomIn animate__repeat-1 animate__delay-2s animate__slower'>até aqui, tudo ok?</h5>
+  
+  ]
+]
+
+
+---
+class: center, bottom
+
+# Regressão linear
 
 ---
 
@@ -393,13 +1766,17 @@ class: center, bottom, inverse
 * Avaliar o efeito as relações da variável independente (x) sobre uma variável dependente (y)
 * Descrever a estrutura dos dados
 
+---
+
 ## Modelo de Regressão Linear
-&lt;p&gt;Modelo: y = a + bx + Erro
-&lt;p&gt;Onde:
-&lt;p&gt;y = é o valor a ser predito
-&lt;p&gt;a = é o intercepto (valor quando x = 0)
-&lt;p&gt;b = é a inclinação da reta de regressão
-&lt;p&gt;x = é o valor da variável preditora
+`\(\Huge{Y = \beta_0 + \beta_1 x + \epsilon}\)`   
+
+Onde:  
+Y = é o valor a ser predito  
+`\(\Huge{\beta_0}\)` = é o intercepto (valor quando x = 0)  
+`\(\Huge{\beta_1}\)` = é a inclinação da reta de regressão  
+x = é o valor da variável preditora (preditor linear)   
+`\(\Huge{\epsilon}\)` é o erro
 
 ---
 
@@ -450,6 +1827,7 @@ modelo2 = lm(renda ~ anosdeestudo)
 ```r
 plot(renda ~ anosdeestudo)
 abline(modelo2, col=2, lty=2, lwd=2)
+legend("topleft", legend=c("valores observados", "valores ajustados"), lty=c(NA,2), col=c(1,2), lwd=1:2, bty="n", pch=c(1,NA))
 ```
 
 ![](index_files/figure-html/Reg21-1.png)&lt;!-- --&gt;
@@ -531,28 +1909,148 @@ plot(mtcars$mpg ~ mtcars$hp)
 
 ![](index_files/figure-html/Reg5-1.png)&lt;!-- --&gt;
 
+
 ---
+
+class: middle, inverse
+
+.pull-left[
+  .huge-text[check point]
+]
+.pull-right[
+  .larger[
+
+  <head>
+
+<link
+  rel='stylesheet'
+  href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css'
+/>
+
+</head>
+
+<h5 style='color:darkred; display:inline-block' class='animate__animated animate__zoomIn animate__repeat-1 animate__delay-2s animate__slower'>até aqui, tudo ok?</h5>
+  
+  ]
+]
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true
+"highlightStyle": "solarized-light",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"slideNumberFormat": "<div class=\"progress-bar-container\">   <div class=\"progress-bar\" style=\"width: calc(%current% / %total% * 100%);\">   </div> </div>"
 });
-if (window.HTMLWidgets) slideshow.on('showSlide', function (slide) {setTimeout(function() {window.dispatchEvent(new Event('resize'));}, 100)});</script>
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
   }
-});
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
