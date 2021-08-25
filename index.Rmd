@@ -6,7 +6,7 @@ institute: "UNIRIO"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["xaringan-themer.css", "slides-style.css"]
+    css: ["xaringan-themer.css"]
     nature:
       highlightStyle: solarized-light
       highlightLines: true
@@ -152,6 +152,21 @@ library(reshape2)
 
 ---
 
+
+<img src="img/correlacao.png" alt="correlacao" width="800"/>
+
+```{r,eval=FALSE,echo=FALSE, message=FALSE,warning=FALSE}
+#![](img/correlacao.png){:height="36px" width="36px"}
+#
+#library(png)
+#png::readPNG('img/correlacao.png')
+```
+
+
+---
+
+
+
 ```{r dispe, echo=TRUE,fig.align='center',fig.width=12}
 x <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) 
 y <- c(100, 200,300,400,500,600, 700, 800, 900, 1000) 
@@ -237,6 +252,9 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 ---
 
+## Coeficiente de correlação produto-momento de Pearson (r)
+<p> Mede a intensidade e a direção da relação entre duas variáveis contínuas
+
 ## Tipos de correlações
 
 <p> **Correlação de Pearson** para variáveis continuas
@@ -248,14 +266,19 @@ A Correlação mede a **direção** (positivas ou negativas) e a **intensidade**
 
 ---
 
-### Coeficiente de correlação produto-momento de Pearson (r)
-<p> Mede a intensidade e a direção da relação entre duas variáveis contínuas
-## Interpretação do r
-### Valores de referência	Interpretação
-<p>  0 < r < 0,25	baixa ou nenhuma associação
-<p>  0,25 < r < 0,5	grau fraco de associação
-<p>  0,5 < r < 0,75	grau moderado ou bom de associação
-<p>  r > 0,75	grau bom ou excelente
+### Interpretação do r - Valores de referência	
+#### Negativo 
+<p>  -0,2 < r < 0   baixa ou nenhuma associação	
+<p>  -0,7 < r < -0,2 	grau fraco/moderado de associação 
+<p>  < -0,7   grau excelente de associação
+#### Positivo 
+<p>  0 < r < 0,2   baixa ou nenhuma associação	(ou -0,2 < r < 0)
+<p>  0,2 < r < 0,7  	grau fraco/moderado de associação (ou -0,7 < r < -0,2)
+<p>  r > 0,7   grau excelente de associação (ou <-0,7)
+
+---
+
+<img src="img/correlacao.png" alt="correlacao" width="800"/>
 
 ---
 
@@ -267,35 +290,35 @@ Onde:
 * S = Desvio-padrão
 * Covariância é o número que reflete o grau em que duas variáveis variam juntas.
 
-  $$\Huge{COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}}$$
+$$ \Huge{COV = \frac{\Sigma(X - \overline{X})(Y - \overline{Y})}{N - 1}} $$
 
 ---
+
 ## Fórmula alternativa
 
-  $$\Huge{r = \frac{n*\Sigma(X*Y) - \Sigma(X)*\Sigma(Y)}{\sqrt{n*\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n*\Sigma(Y)^2-(\Sigma(Y))^2}}}$$
+$$\Huge{r = \frac{n*\Sigma(X*Y) - \Sigma(X)*\Sigma(Y)}{\sqrt{n*\Sigma(X)^2-(\Sigma(X))^2}\sqrt{n*\Sigma(Y)^2-(\Sigma(Y))^2}}}$$ 
+
 ## Como aplicar a Fórmula em um conjunto de dados?
 
 
 ---
 
-
+## Banco de dados
+#### para o cálculo da correlação
+    
 ```{r, echo=FALSE}
+library(dplyr)
+library(flextable)
+library(gt)
 dados <-data.frame(x=c(2,3,4,5,5,6,7,8),
                    y=c(4,7,9,10,11,11,13,15))
-library(gt)
-# Create a gt table based on a preprocessed `sp500`
+
 dados %>%
-  gt() %>%
-  tab_header(
-    title = "Banco de dados",
-    subtitle = "para o cálculo da correlação"
-  ) %>%
-  cols_label(
-    x = "X", y = "Y") %>%
-  cols_align(
-    align = "center",
-    columns = vars( x , y)
-  )
+  flextable() %>%
+  theme_box() %>%
+  align(align = "center", part = "all")    %>%
+  fontsize(size = 22,part = 'all')
+
 ```
 
 ---
@@ -307,34 +330,27 @@ class: center, middle
 
 ---
 
+## Variáveis originais e cálculos intermediários
 ```{r, echo=FALSE,warning=FALSE,message=FALSE,comment=NA}
-library(dplyr)
-# Create a gt table based on a preprocessed `sp500`
+
+## Variáveis originais e cálculos intermediários
+
 dados %>%
   select(x,y) %>%
-  mutate(x_quad = x*x,
-         y_quad = y*y,
+  mutate(x_quadrado = x*x,
+         y_quadrado = y*y,
          xy = x*y) %>%
-  gt() %>%
-  tab_header(
-    title = "Variáveis originais",
-    subtitle = "e cálculos intermediários"
-  ) %>%
-  cols_label(
-    x = "X", y = "Y",x_quad=" X ao Quadrado",
-    y_quad=" Y ao Quadrado",xy="X*Y")%>%
-  tab_spanner(
-    label = "cálculos intermediários",
-    columns = vars(x_quad, y_quad, xy)
-  ) %>%
-  tab_spanner(
-    label = " variáveis originais",
-    columns = vars(x, y)
-  ) %>%
-  cols_align(
-    align = "center",
-    columns = vars( x , y,x_quad, y_quad, xy)
-  )
+  flextable() %>%
+  set_header_labels(values = list(x = "x",
+                                  y = "y",
+                                  x_quadrado = "x ao quadrado",
+                                  y_quadrado = "y ao quadrado",
+                                  xy = "x*y")) %>%
+  theme_box() %>%
+  align(align = "center", part = "all")    %>%
+  fontsize(size = 22,part = 'all')
+
+
 ```
 
 
@@ -348,32 +364,47 @@ class: center, middle
 ---
 
 ```{r, echo=FALSE,warning=FALSE,message=FALSE,comment=NA}
+
+## Variáveis originais e cálculos intermediários
+
 dados %>%
   select(x,y) %>%
-  mutate(x_quad = x*x,
-         y_quad = y*y,
+  mutate(x_quadrado = x*x,
+         y_quadrado = y*y,
          xy = x*y) %>%
-  summarise(soma_x= sum(x),soma_y=sum(y),soma_x_quad=sum(x_quad),soma_y_quad=sum(y_quad),soma_xy=sum(xy))%>%
-  gt() %>%
-  tab_header(
-    title = "Soma das variáveis originais",
-    subtitle = " e dos cálculos intermediários"
-  ) %>%
-  cols_label(
-    soma_x = "Soma X", soma_y = "Soma Y",soma_x_quad="Soma X ao Quadrado",
-    soma_y_quad="Soma Y ao Quadrado",soma_xy="Soma X*Y") %>%
-  tab_spanner(
-    label = "cálculos intermediários",
-    columns = vars(soma_x_quad, soma_y_quad, soma_xy)
-  ) %>%
-  tab_spanner(
-    label = " variáveis originais",
-    columns = vars(soma_x, soma_y)
-  ) %>%
-  cols_align(
-    align = "center",
-    columns = vars(soma_x, soma_y,soma_x_quad, soma_y_quad, soma_xy)
-  )
+  flextable() %>%
+  set_header_labels(values = list(x = "x",
+                                  y = "y",
+                                  x_quadrado = "x ao quadrado",
+                                  y_quadrado = "y ao quadrado",
+                                  xy = "x*y")) %>%
+  theme_box() %>%
+  align(align = "center", part = "all")    %>%
+  fontsize(size = 22,part = 'all') 
+
+
+```
+
+---
+
+
+```{r, echo=FALSE,warning=FALSE,message=FALSE,comment=NA}
+
+dados %>%
+  select(x,y) %>%
+  mutate(x_quadrado = x*x,
+         y_quadrado = y*y,
+         xy = x*y) %>%
+  summarise(soma_x=sum(x),soma_y=sum(y),soma_x_quadrado=sum(x_quadrado),soma_y_quadrado=sum(y_quadrado),soma_xy=sum(xy))%>%
+  flextable() %>%
+  set_header_labels(values = list(soma_x = "soma x",
+                                  soma_y = "soma y",
+                                  soma_x_quadrado = "soma x ao quadrado",
+                                  soma_y_quadrado = "soma y ao quadrado",
+                                  soma_xy = "soma x*y")) %>%
+  theme_box() %>%
+  align(align = "center", part = "all")  %>%
+  fontsize(size = 22,part = 'all')
 
 ```
 
@@ -474,10 +505,12 @@ cor(CARROS[,c("Preco","RPM","HP","Kmporlitro","Amperagem_circ_eletrico","Peso")]
 ---
 
 
-```{r,echo=FALSE,warning=FALSE,comment=NA,message=FALSE}
+# No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.
+
+
+```{r,eval=FALSE, echo=FALSE,warning=FALSE,comment=NA,message=FALSE}
 # https://github.com/feddelegrand7/GomoGomonoMi
 library(GomoGomonoMi)
-
 use_gomo()
 
 gomo_gomo_no(text = " \"No entanto, hoje em dia podemos construir uma visualização de dados dessa matriz.", 
@@ -581,21 +614,8 @@ class: middle, inverse
   .huge-text[check point]
 ]
 .pull-right[
-  .larger[
-```{r,echo=FALSE,warning=FALSE,message=FALSE}
-# https://github.com/feddelegrand7/GomoGomonoMi
-library(GomoGomonoMi)
-use_gomo()
-gomo_gomo_no(text = "até aqui, tudo ok?", 
-             level = "#####", 
-             animation = "zoomIn", 
-             duration = "slower", 
-             delay = 2, 
-             color = "darkred")
-```  
-  
+  .larger[até aqui, tudo ok?]
   ]
-]
 
 
 ---
@@ -703,18 +723,6 @@ class: middle, inverse
   .huge-text[check point]
 ]
 .pull-right[
-  .larger[
-```{r,echo=FALSE,warning=FALSE,message=FALSE}
-# https://github.com/feddelegrand7/GomoGomonoMi
-library(GomoGomonoMi)
-use_gomo()
-gomo_gomo_no(text = "até aqui, tudo ok?", 
-             level = "#####", 
-             animation = "zoomIn", 
-             duration = "slower", 
-             delay = 2, 
-             color = "darkred")
-```  
-  
+  .larger[ até aqui, tudo ok?
   ]
 ]
